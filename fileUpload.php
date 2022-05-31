@@ -24,8 +24,6 @@ if (isset($_POST['submit'])) {
         //discard the filename and only take the extension
         $file_ext = strtolower(end($file_ext));
 
-        
-        var_dump($file_tmp);
 
         if (in_array($file_ext, $allowed_ext)) {
 
@@ -42,7 +40,7 @@ if (isset($_POST['submit'])) {
                         break;
 
                     case false:
-                        $message = "Error uploading file " . var_dump($move);
+                        $message = "Error uploading file ";
                         break;
                 }
             }
