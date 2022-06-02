@@ -1,6 +1,8 @@
 <?php
 include './database connection.php';
 
+session_start();
+
 $message = "";
 
 if (isset($_POST['login'])) {
@@ -14,20 +16,28 @@ if (isset($_POST['login'])) {
     $query = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username = '$input_username' ");
     $check_password = mysqli_fetch_assoc($query);
 
-    $check_password_salt = $check_password['password_salt'];
-
-    $real_password = $check_password['password'];
-    $input_password = sha1($check_password_salt . $_POST['password']);
 
     if ($check_password == NULL) {
 
         $message = "account not registered, please register first!";
-    } else if ($real_password != $input_password) {
-
-        $message = "wrong password";
     } else {
 
-        $message = "login successfull";
+        $check_password_salt = $check_password['password_salt'];
+
+        $real_password = $check_password['password'];
+        $input_password = sha1($check_password_salt . $_POST['password']);
+
+        if ($real_password != $input_password) {
+
+            $message = "wrong password";
+        } else {
+
+            $_SESSION['username'] = $input_username;
+
+            $message = "login successfull";
+
+            header('Location: ./display_user_data.php');
+        }
     }
 } else if (isset($_POST['signup'])) {
 
@@ -53,9 +63,9 @@ if (isset($_POST['login'])) {
 
 <body>
 
-    <h1>Login</h1>
-    <h1> <?php echo $message; ?></h1>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <h1 style="display: flex; justify-content: center">Login</h1>
+    <h2 style="display: flex; justify-content: center"> <?php echo $message; ?></h2>
+    <form style="display: flex; align-content:space-between ; align-items: center ; justify-content: center ; flex-direction: column;" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <label>Username</label>
         <input type="text" name="username">
         <br />
@@ -64,6 +74,8 @@ if (isset($_POST['login'])) {
         <br />
         <button type="submit" name="login">login</button>
         <button type="submit" name="signup" style="margin: 1rem">signup</button>
+        <br/>
+        <input type="checkbox" name="remember_me">remember me
     </form>
     <script src="" async defer></script>
 </body>

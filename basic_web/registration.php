@@ -34,7 +34,6 @@ if (isset($_POST['submit'])) {
 else if(isset($_POST['to_login'])){
 
     header("Location: ./Login.php");
-
 }
 
 
@@ -54,24 +53,25 @@ else if(isset($_POST['to_login'])){
 </head>
 
 <body>
-    <div>
+    <div style="display: flex ; flex-direction: column ; align-content:space-between ; align-items: center  ; justify-content: center">
         <h1>Registration Form</h1>
         <?php echo $message; ?>
         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-            <label>username</label>
+            <label>username     :   </label>
             <input type="text" name="username" placeholder="Username">
             <br />
-            <label>password</label>
+            <label>password     :   </label>
             <input type="password" name="password" placeholder="Password">
             <br />
-            <label>email</label>
+            <label>email        :   </label>
             <input type="email" name="email" placeholder="Email">
             <br />
-            <label>Phone Number :</label>
+            <label>Phone     :  </label>
             <input type="text" name="phone_number" placeholder="08XXXXXX">
             <br />
             <input type="submit" name="submit" style="margin:1rem">
             <button type="submit" name="to_login">login</button>
+            
         </form>
     </div>
 
