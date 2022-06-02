@@ -4,20 +4,11 @@ include './database connection.php';
 session_start();
 
 
-if (isset($_SESSION['username']) == false) {
+if (!isset($_SESSION['username']) && !isset($_COOKIE['username'])) {
 
     header("Location: Login.php");
 }
 
-
-
-function logout()
-{
-
-    session_destroy();
-
-    header('Location: Login.php');
-}
 
 $query = mysqli_query($conn, "SELECT * FROM user_data");
 

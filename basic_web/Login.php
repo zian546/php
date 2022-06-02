@@ -34,6 +34,11 @@ if (isset($_POST['login'])) {
 
             $_SESSION['username'] = $input_username;
 
+            if(isset($_POST['remember_me'])){
+
+                setcookie('username', $input_username, time() + 86400);
+            }
+
             $message = "login successfull";
 
             header('Location: ./display_user_data.php');
@@ -75,7 +80,7 @@ if (isset($_POST['login'])) {
         <button type="submit" name="login">login</button>
         <button type="submit" name="signup" style="margin: 1rem">signup</button>
         <br/>
-        <input type="checkbox" name="remember_me">remember me
+        <input type="checkbox" name="remember_me">remember me(1 day)
     </form>
     <script src="" async defer></script>
 </body>
