@@ -25,6 +25,7 @@ if (isset($_POST['submit'])) {
         $file_ext = strtolower(end($file_ext));
 
 
+
         if (in_array($file_ext, $allowed_ext)) {
 
             if ($file_size > (2 * 1e+6)) {

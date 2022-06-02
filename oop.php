@@ -1,39 +1,29 @@
 <?php
 
-class user
+class User
 {
+    public function _construct($name, $password, $email){
+        $this->email = $email;
+        $this->password = $password;
+        $this->name = $name;
+    }
+}
 
-
-    public $username;
-    public $password;
-    public $email;
-
-
-    function set_username($val)
-    {
-        $this->username = $val;
+class Employee extends User
+{
+    public function _construct($name, $password, $email, $user){
+        parent::_construct($name, $password, $email);
+        
+        
     }
 
-
-    function set_password($val)
-    {
-        $this->password = $val;
-    }
-
-
-    function set_email($val)
-    {
-        $this->email = $val;
-    }
 }
 
 
 if(isset($_POST['submit'])){
     $new_user = new User();
 
-    $new_user->set_username($_POST['username']);
-    $new_user->set_password($_POST['password']);
-    $new_user->set_email($_POST['email']);
+   
 
     echo (json_encode($new_user)); 
 
