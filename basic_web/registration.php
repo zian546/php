@@ -23,13 +23,18 @@ if (isset($_POST['submit'])) {
         $phone = $_POST["phone_number"];
 
 
-        $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number)   VALUES(NULL,'$username','$password','$email','$phone'); ");
+        $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,password_salt)   VALUES(NULL,'$username','$password','$email','$phone','$salt'); ");
         if (!$save_user) {
             $message = "Error registering user";
         } else {
             $message = "registration successfull!";
         }
     }
+}
+else if(isset($_POST['to_login'])){
+
+    header("Location: ./Login.php");
+
 }
 
 
@@ -65,7 +70,8 @@ if (isset($_POST['submit'])) {
             <label>Phone Number :</label>
             <input type="text" name="phone_number" placeholder="08XXXXXX">
             <br />
-            <input type="submit" name="submit">
+            <input type="submit" name="submit" style="margin:1rem">
+            <button type="submit" name="to_login">login</button>
         </form>
     </div>
 

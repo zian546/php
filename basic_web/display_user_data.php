@@ -32,6 +32,7 @@ $query = mysqli_query($conn,"SELECT * FROM user_data");
                 <th>password</th>
                 <th>email</th>
                 <th>phone number</th>
+                <th>password salt</th>
             </tr>
 
             <?php while($result = mysqli_fetch_assoc($query)): ?>
@@ -42,6 +43,7 @@ $query = mysqli_query($conn,"SELECT * FROM user_data");
                 <td><?php echo $result['password']?></td>
                 <td><?php echo $result['email']?></td>
                 <td><?php echo $result['phone_number']?></td>
+                <td><?php echo $result['password_salt']?></td>
                 
             </tr>
 
