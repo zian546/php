@@ -24,16 +24,39 @@ if (isset($_POST['submit'])) {
         $activation_status_default = 'Pending';
         $Date = date("Y D d M  h:i:s:e P ");
 
-        $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
-        VALUES(NULL,'$username','$password','$email','$phone', '$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date'); ");
-        if (!$save_user) {
-            $message = "Error registering user";
+        $search_username = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username='$username' ");
+
+        if (!$search_username) {
+
+            $search_email = mysqli_query($conn, "SELECT * FROM `user_data` WHERE email='$email' ");
+
+            if (!$search_email) {
+
+                $search_phone = mysqli_query($conn, "SELECT * FROM `user_data` WHERE phone='$phone' ");
+
+                if (!$search_phone) {
+
+                    $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
+                    VALUES(NULL,'$username','$password','$email','$phone', '$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date'); ");
+                    if (!$save_user) {
+                        $message = "Error registering user";
+                    } else {
+                        $message = "registration successfull!";
+                        header("Location: ./Login.php");
+                    }
+                } else {
+
+                    $message = "Phone number is already registered";
+                }
+            } else {
+
+                $message = "Email already registered";
+            }
         } else {
-            $message = "registration successfull!";
+            $message = "Username not available!";
         }
     }
-}
-else if(isset($_POST['to_login'])){
+} else if (isset($_POST['to_login'])) {
 
     header("Location: ./Login.php");
 }
@@ -59,21 +82,21 @@ else if(isset($_POST['to_login'])){
         <h1>Registration Form</h1>
         <?php echo $message; ?>
         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-            <label>username     :   </label>
+            <label>username : </label>
             <input type="text" name="username" placeholder="Username">
             <br />
-            <label>password     :   </label>
+            <label>password : </label>
             <input type="password" name="password" placeholder="Password">
             <br />
-            <label>email        :   </label>
+            <label>email : </label>
             <input type="email" name="email" placeholder="Email">
             <br />
-            <label>Phone     :  </label>
+            <label>Phone : </label>
             <input type="text" name="phone_number" placeholder="08XXXXXX">
             <br />
             <input type="submit" name="submit" style="margin:1rem">
             <button type="submit" name="to_login">login</button>
-            
+
         </form>
     </div>
 

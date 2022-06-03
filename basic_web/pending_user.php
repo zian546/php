@@ -114,7 +114,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </html>
 
 <?php
-//todo : user verification with admin and email, role grant, read_only with user, live search user
+//todo : *user verification with admin* and email, role grant, read_only with user, live search user, upload photo to verify
 
 
 ?>
