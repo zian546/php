@@ -14,9 +14,9 @@
 <body>
     <div class="w3-sidebar w3-light-grey w3-bar-block" id="sidebar">
         <h3 class="w3-bar-item">Menu</h3>
-        <a class="w3-bar-item w3-button" href="">approved</a>
-        <a class="w3-bar-item w3-button" href="">pending</a>
-        <a class="w3-bar-item w3-button" href="">rejected</a>
+        <a class="w3-bar-item w3-button" href="./approved_user.php">approved</a>
+        <a class="w3-bar-item w3-button" href="./pending_user.php">pending</a>
+        <a class="w3-bar-item w3-button" href="./rejected_user.php">rejected</a>
         <a class="w3-bar-item w3-button" href="./logout.php">logout</a>
     </div>
             <script src="" async defer></script>
