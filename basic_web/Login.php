@@ -41,7 +41,7 @@ if (isset($_POST['login'])) {
 
             $message = "login successfull";
 
-            header('Location: ./display_user_data.php');
+            header('Location: ./pending_user.php');
         }
     }
 } else if (isset($_POST['signup'])) {

@@ -21,9 +21,11 @@ if (isset($_POST['submit'])) {
 
         $email = $_POST["email"];
         $phone = $_POST["phone_number"];
+        $activation_status_default = 'Pending';
+        $Date = date("Y D d M  h:i:s:e P ");
 
-
-        $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,password_salt)   VALUES(NULL,'$username','$password','$email','$phone','$salt'); ");
+        $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
+        VALUES(NULL,'$username','$password','$email','$phone', '$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date'); ");
         if (!$save_user) {
             $message = "Error registering user";
         } else {
