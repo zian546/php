@@ -4,14 +4,28 @@ include './sidebar.php';
 
 
 
-
-if (!isset($_SESSION['username']) && !isset($_COOKIE['username'])) {
+if (!isset($_SESSION['role'])  || $_SESSION['role'] != 'admin') {
 
     header("Location: Login.php");
 }
 
+if (isset($_POST['approve'])) {
 
-$query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation Status` = 'Approved'");
+    $id =  $_POST["user_id"];
+    $Date = date("Y D d M  h:i:s:e P ");
+
+    $update = mysqli_query($conn, "UPDATE `user_data` SET `Admin Activation Status` = 'Approved', `ApprovedAt` = '$Date'  WHERE `id` = '$id'  ");
+}
+
+if (isset($_POST['reject'])) {
+    $id =  $_POST["user_id"];
+    $Date = date("Y D d M  h:i:s:e P ");
+
+    $update = mysqli_query($conn, "UPDATE `user_data` SET `Admin Activation Status` = 'Rejected', `RejectedAt` = '$Date'  WHERE `id` = '$id'  ");
+}
+
+
+$query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation Status` = 'Pending'");
 
 ?>
 
@@ -32,10 +46,9 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </head>
 
 <body>
-   
 
     <div class="w3-container w3-teal" style=" margin-left: 10%; display:flex; justify-content:center">
-        Approved Users
+        Pending Users
     </div>
 
     <div class="w3-container" style="display:flex; justify-content:center; margin-left: 10%; margin-top: 5%;overflow-y: scroll; font-size: 0.7rem; ">
@@ -51,7 +64,9 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                 <th>Email Activation Status</th>
                 <th>Role</th>
                 <th>CreatedAt</th>
-                <th>ApprovedAt</th>
+                <th>Approve</th>
+                <th>Reject</th>
+
             </thead>
             <tbody>
                 <?php while ($result = mysqli_fetch_assoc($query)) : ?>
@@ -67,12 +82,18 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                         <td><?php echo $result['Email Activation Status'] ?></td>
                         <td><?php echo $result['role'] ?></td>
                         <td style="overflow-y:scroll;"><?php echo $result['CreatedAt'] ?></td>
-                        <td><?php echo $result['ApprovedAt'] ?></td>
-                      
 
+                        <td>
 
+                            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                                <input type="hidden" name="user_id" value=" <?php echo $result['id'] ?>"></input>
+                                <input type="submit" name="approve" style="margin: 0.2rem" placeholder="approve"></input>
+                        <td>
 
-
+                            <input type="submit" name="reject"></input>
+                        </td>
+                        </form>
+                        </td>
 
                     </tr>
 
@@ -89,7 +110,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </html>
 
 <?php
-//todo : user verification with admin and email, role grant, read_only with user, live search user
+//todo : *user verification with admin* and email, role grant, *read_only with user*, live search user, upload photo to verify
 
 
 ?>

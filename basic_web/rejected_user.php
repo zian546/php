@@ -1,7 +1,7 @@
 <?php
 include './database connection.php';
+include './sidebar.php';
 
-session_start();
 
 
 
@@ -32,7 +32,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </head>
 
 <body>
-    <?php include './sidebar.php'; ?>
+    
 
     <div class="w3-container w3-teal" style=" margin-left: 10%; display:flex; justify-content:center">
         Pending Users

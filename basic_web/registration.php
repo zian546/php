@@ -26,23 +26,25 @@ if (isset($_POST['submit'])) {
 
         $search_username = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username='$username' ");
 
-        if (!$search_username) {
+        //print_r($search_username);
+
+        if ($search_username->num_rows == 0) {
 
             $search_email = mysqli_query($conn, "SELECT * FROM `user_data` WHERE email='$email' ");
 
-            if (!$search_email) {
+            if ($search_email->num_rows == 0) {
 
-                $search_phone = mysqli_query($conn, "SELECT * FROM `user_data` WHERE phone='$phone' ");
+                $search_phone = mysqli_query($conn, "SELECT * FROM `user_data` WHERE phone_number='$phone' ");
 
-                if (!$search_phone) {
+                if ($search_phone->num_rows == 0) {
 
                     $save_user = mysqli_query($conn, "INSERT INTO  `user_data` (id,username,`password`,email,phone_number,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
                     VALUES(NULL,'$username','$password','$email','$phone', '$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date'); ");
                     if (!$save_user) {
                         $message = "Error registering user";
                     } else {
-                        $message = "registration successfull!";
-                        header("Location: ./Login.php");
+                        $message = "registration successfull!\nPlease wait for verification";
+                        
                     }
                 } else {
 

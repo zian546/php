@@ -7,9 +7,6 @@ $message = "";
 
 if (isset($_POST['login'])) {
 
-    //salt for password authentication
-
-
     $input_username = $_POST['username'];
 
     //search the user in db based on input username
@@ -22,6 +19,7 @@ if (isset($_POST['login'])) {
         $message = "account not registered, please register first!";
     } else {
 
+        //check if the password is correct
         $check_password_salt = $check_password['password_salt'];
 
         $real_password = $check_password['password'];
@@ -32,16 +30,35 @@ if (isset($_POST['login'])) {
             $message = "wrong password";
         } else {
 
-            $_SESSION['username'] = $input_username;
 
-            if(isset($_POST['remember_me'])){
+            // check the activation status of the user
+            if ($check_password['Admin Activation Status']  == 'Pending') {
 
-                setcookie('username', $input_username, time() + 86400);
+                $message = 'your account are being verified, please wait';
+            } else if ($check_password['Admin Activation Status'] == 'Rejected') {
+
+                $message = 'your account is rejected, please contact our customer support';
+            } else {
+
+
+                $_SESSION['username'] = $input_username;
+                $_SESSION['role'] = $check_password['role'];
+
+                if (isset($_POST['remember_me'])) {
+
+                    setcookie('username', $input_username, time() + 86400);
+                }
+
+
+                if ($check_password['role'] == 'admin') {
+                    $message = "login successfull";
+                    header('Location: ./pending_user_admin.php');
+                } else {
+
+                    $message = "login successfull";
+                    header('Location: ./pending_user.php');
+                }
             }
-
-            $message = "login successfull";
-
-            header('Location: ./pending_user.php');
         }
     }
 } else if (isset($_POST['signup'])) {
@@ -79,7 +96,7 @@ if (isset($_POST['login'])) {
         <br />
         <button type="submit" name="login">login</button>
         <button type="submit" name="signup" style="margin: 1rem">signup</button>
-        <br/>
+        <br />
         <input type="checkbox" name="remember_me">remember me(1 day)
     </form>
     <script src="" async defer></script>

@@ -1,7 +1,7 @@
 <?php
 include './database connection.php';
+include './sidebar.php';
 
-session_start();
 
 
 
@@ -49,7 +49,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </head>
 
 <body>
-    <?php include './sidebar.php'; ?>
+
 
     <div class="w3-container w3-teal" style=" margin-left: 10%; display:flex; justify-content:center">
         Pending Users
@@ -68,8 +68,6 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                 <th>Email Activation Status</th>
                 <th>Role</th>
                 <th>CreatedAt</th>
-                <th>Approve</th>
-                <th>Reject</th>
                 
             </thead>
             <tbody >
@@ -87,18 +85,8 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                         <td><?php echo $result['role'] ?></td>
                         <td style="overflow-y:scroll;"><?php echo $result['CreatedAt'] ?></td>
                         
-                        <td>
-
-                            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
-                                <input type="hidden" name="user_id" value=" <?php echo $result['id'] ?>"></input>
-                                <input type="submit" name="approve" style="margin: 0.2rem" placeholder="approve"></input>
-                        <td>
-
-                            <input type="submit" name="reject"></input>
-                        </td>
+                       
                         </form>
-                        </td>
-                        
                     </tr>
 
                 <?php endwhile; ?>

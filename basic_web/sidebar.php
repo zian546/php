@@ -1,3 +1,19 @@
+<?php 
+session_start();
+
+$link;
+
+if($_SESSION['role'] == 'admin'){
+
+    $link = './pending_user_admin.php';
+
+}
+else{
+    $link = './pending_user.php';
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -15,7 +31,7 @@
     <div class="w3-sidebar w3-light-grey w3-bar-block" id="sidebar">
         <h3 class="w3-bar-item">Menu</h3>
         <a class="w3-bar-item w3-button" href="./approved_user.php">approved</a>
-        <a class="w3-bar-item w3-button" href="./pending_user.php">pending</a>
+        <a class="w3-bar-item w3-button" href='<?php echo $link;?>'>pending</a>
         <a class="w3-bar-item w3-button" href="./rejected_user.php">rejected</a>
         <a class="w3-bar-item w3-button" href="./logout.php">logout</a>
     </div>
