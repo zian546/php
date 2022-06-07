@@ -4,6 +4,7 @@ include './sidebar.php';
 
 
 
+
 if (!isset($_SESSION['role'])  || $_SESSION['role'] != 'admin') {
 
     header("Location: Login.php");
@@ -27,6 +28,7 @@ if (isset($_POST['reject'])) {
 
 $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation Status` = 'Pending'");
 
+
 ?>
 
 
@@ -46,7 +48,6 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
 </head>
 
 <body>
-
     <div class="w3-container w3-teal" style=" margin-left: 10%; display:flex; justify-content:center">
         Pending Users
     </div>
@@ -63,6 +64,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                 <th>Admin Activation Status</th>
                 <th>Email Activation Status</th>
                 <th>Role</th>
+                <th>Photo</th>
                 <th>CreatedAt</th>
                 <th>Approve</th>
                 <th>Reject</th>
@@ -70,6 +72,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
             </thead>
             <tbody>
                 <?php while ($result = mysqli_fetch_assoc($query)) : ?>
+                  
 
                     <tr style="overflow-y:scroll;">
                         <td><?php echo $result['id'] ?></td>
@@ -81,16 +84,17 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                         <td><?php echo $result['Admin Activation Status'] ?></td>
                         <td><?php echo $result['Email Activation Status'] ?></td>
                         <td><?php echo $result['role'] ?></td>
+                        <td><img src="<?php echo "data:image/jpg;base64,". base64_encode($result['Photo']) ?>" width="300px">
                         <td style="overflow-y:scroll;"><?php echo $result['CreatedAt'] ?></td>
 
                         <td>
 
                             <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                                 <input type="hidden" name="user_id" value=" <?php echo $result['id'] ?>"></input>
-                                <input type="submit" name="approve" style="margin: 0.2rem" placeholder="approve"></input>
+                                <button type="submit" name="approve" style="margin: 0.2rem" placeholder="approve">approve</button>
                         <td>
 
-                            <input type="submit" name="reject"></input>
+                            <button type="submit" name="reject">reject</button>
                         </td>
                         </form>
                         </td>
