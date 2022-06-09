@@ -3,7 +3,7 @@ include './database connection.php';
 
 
 
-$allowed_ext = ['jpg','JPG'];
+$allowed_ext = ['jpg','JPG','jpeg','png',];
 $message = "";
 
 if (isset($_POST['submit'])) {
@@ -16,6 +16,8 @@ if (isset($_POST['submit'])) {
 
         $file_name = $_FILES['photo']['name'];
         $file_size = $_FILES['photo']['size'] / 1e+6;
+
+        //get the file binary data in an string encoded format
         $file_data = mysqli_real_escape_string($conn, file_get_contents($_FILES['photo']['tmp_name']));
 
         //split the extension and the actual filename
@@ -46,7 +48,7 @@ if (isset($_POST['submit'])) {
 
                 $search_username = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username='$username' ");
 
-                //print_r($search_username);
+             
 
                 if ($search_username->num_rows == 0) {
 
@@ -58,8 +60,8 @@ if (isset($_POST['submit'])) {
 
                         if ($search_phone->num_rows == 0) {
 
-                            $save_user = mysqli_query($conn, "INSERT INTO `user_data` (id,username,`password`,email,phone_number,`Photo`,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
-                    VALUES(NULL,'$username','$password','$email','$phone', '$file_data','$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date');");
+                            $save_user = mysqli_query($conn, "INSERT INTO `user_data` (id,username,`password`,email,phone_number,`Photo`,`photo type`,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
+                    VALUES(NULL,'$username','$password','$email','$phone', '$file_data', '$file_ext' ,'$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date');");
                             if (!$save_user) {
                                 $message = "Error registering user";
                             } else {

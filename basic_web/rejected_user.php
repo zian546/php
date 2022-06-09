@@ -50,6 +50,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                 <th>Admin Activation Status</th>
                 <th>Email Activation Status</th>
                 <th>Role</th>
+                <th>Photo</th>
                 <th>CreatedAt</th>
                 <th>RejectedAt</th>
              
@@ -68,6 +69,7 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
                         <td><?php echo $result['Admin Activation Status'] ?></td>
                         <td><?php echo $result['Email Activation Status'] ?></td>
                         <td><?php echo $result['role'] ?></td>
+                        <td><img src="<?php echo "data:image/{$result['photo type']};base64,". base64_encode($result['Photo']) ?>" width="300px">
                         <td style="overflow-y:scroll;"><?php echo $result['CreatedAt'] ?></td>
                         <td><?php echo $result['RejectedAt'] ?></td>
 
