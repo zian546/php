@@ -12,6 +12,47 @@ if (!isset($_SESSION['username']) && !isset($_COOKIE['username'])) {
 
 
 $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation Status` = 'Rejected'");
+$search_result = null;
+
+
+
+if(isset($_GET['search_submit'])) {
+    $value_to_search = $_GET['search'];
+
+    $query_search = mysqli_query($conn, "SELECT * FROM user_data WHERE `username` = '$value_to_search'  AND `Admin Activation Status` = 'Rejected' ");
+
+    if($query_search->num_rows == 0) {
+
+        $query_search = mysqli_query($conn,"SELECT * FROM user_data WHERE `id` = '$value_to_search' AND `Admin Activation Status` = 'Rejected'");    
+
+        if($query_search->num_rows == 0) {
+            $query_search = mysqli_query($conn,"SELECT * FROM user_data WHERE `email` = '$value_to_search' AND `Admin Activation Status` = 'Rejected'");
+
+            if($query_search->num_rows == 0) {
+                $query_search = mysqli_query($conn,"SELECT * FROM user_data WHERE `phone_number` = '$value_to_search' AND `Admin Activation Status` = 'Rejected'");
+
+                if($query_search->num_rows == 0) {
+
+                    $search_result = false;
+                }else{
+                    $search_result = $query_search;
+                }
+
+            }else {
+                $search_result = $query_search;
+            }
+
+        }else{
+            $search_result = $query_search;
+
+        }
+
+    }else{
+        $search_result = $query_search;
+    }
+   
+}
+
 
 ?>
 
@@ -35,8 +76,82 @@ $query = mysqli_query($conn, "SELECT * FROM user_data WHERE `Admin Activation St
     
 
     <div class="w3-container w3-teal" style=" margin-left: 10%; display:flex; justify-content:center">
-        Pending Users
+        Rejected Users
     </div>
+    <div class="w3-container" style="display:flex; justify-content:center; margin-left: 10%; margin-top: 5%; font-size: 0.7rem; ">
+        <form action="" method="get">
+            <label for="search">search user:</label>
+            <input type="text" name="search">
+
+            <button type="submit" name="search_submit">search</button>
+
+        </form>
+    </div>
+    <div class="w3-container" style="display:flex; justify-content:center; margin-left: 10%; margin-top: 5%;overflow-y: scroll; font-size: 0.7rem; ">
+        <?php if ($search_result === null) : ?>
+            <?php echo "" ?>
+
+        <?php endif ?>
+
+        
+        <?php if ($search_result == false) : ?>
+            <?php echo "no rejected user found" ?>
+        <?php endif ?>
+        <?php if ($search_result !== null && $search_result !== false) : ?>
+            <table style="width:10%" border="1" cellspacing="0" cellpadding="10">
+                <thead>
+                    <th>id</th>
+                    <th>username</th>
+                    <th>password</th>
+                    <th>email</th>
+                    <th>phone number</th>
+                    <th>password salt</th>
+                    <th>Admin Activation Status</th>
+                    <th>Email Activation Status</th>
+                    <th>Role</th>
+                    <th>Photo</th>
+                    <th>CreatedAt</th>
+                    <th>ApprovedAt</th>
+                </thead>
+                <tbody>
+
+
+                    <?php while ($data = mysqli_fetch_assoc($search_result) ) : ?>
+
+                        <tr style="overflow-y:scroll;">
+                            <td><?php echo $data['id'] ?></td>
+                            <td><?php echo $data['username'] ?></td>
+                            <td><?php echo $data['password'] ?></td>
+                            <td><?php echo $data['email'] ?></td>
+                            <td><?php echo $data['phone_number'] ?></td>
+                            <td><?php echo $data['password_salt'] ?></td>
+                            <td><?php echo $data['Admin Activation Status'] ?></td>
+                            <td><?php echo $data['Email Activation Status'] ?></td>
+                            <td><?php echo $data['role'] ?></td>
+                            <td><img src="<?php echo "data:image/{$data['photo type']};base64," . base64_encode($data['Photo']) ?>" width="300px">
+                            <td style="overflow-y:scroll;"><?php echo $data['CreatedAt'] ?></td>
+                            <td><?php echo $data['ApprovedAt'] ?></td>
+                            
+
+
+
+
+
+
+                        </tr>
+
+                    <?php endwhile; ?>
+
+
+
+                </tbody>
+            </table>
+
+
+
+        <?php endif ?>
+    </div>
+
 
     <div class="w3-container" style="display:flex; justify-content:center; margin-left: 10%; margin-top: 5%;overflow-y: scroll; font-size: 0.7rem; ">
         <table style="width:10%" border="1" cellspacing="0" cellpadding="10">

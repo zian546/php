@@ -33,6 +33,7 @@ else{
         <a class="w3-bar-item w3-button" href="./approved_user.php">approved</a>
         <a class="w3-bar-item w3-button" href='<?php echo $link;?>'>pending</a>
         <a class="w3-bar-item w3-button" href="./rejected_user.php">rejected</a>
+        <a class="w3-bar-item w3-button" href="./delete_user.php">delete user</a>
         <a class="w3-bar-item w3-button" href="./logout.php">logout</a>
     </div>
             <script src="" async defer></script>
