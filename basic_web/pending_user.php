@@ -90,11 +90,7 @@ if(isset($_GET['search_submit'])) {
         </form>
     </div>
     <div class="w3-container" style="display:flex; justify-content:center; margin-left: 10%; margin-top: 5%;overflow-y: scroll; font-size: 0.7rem; ">
-        <?php if ($search_result === null) : ?>
-            <?php echo "" ?>
-
-        <?php endif ?>
-
+    
         
         <?php if ($search_result == false) : ?>
             <?php echo "no pending user found" ?>
