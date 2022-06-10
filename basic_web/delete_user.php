@@ -7,6 +7,11 @@ if (!isset($_SESSION['username']) && !isset($_COOKIE['username'])) {
     header("Location: Login.php");
 }
 
+if ( $_SESSION['role'] != 'admin') {
+
+    header("Location: not_admin.php");
+    }
+
 $search_result = null;
 
 
