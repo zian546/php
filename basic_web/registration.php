@@ -3,7 +3,7 @@ include './database connection.php';
 
 
 
-$allowed_ext = ['jpg','JPG','jpeg','png',];
+$allowed_ext = ['jpg', 'JPG', 'jpeg', 'png',];
 $message = "";
 
 if (isset($_POST['submit'])) {
@@ -36,7 +36,11 @@ if (isset($_POST['submit'])) {
                 //generate unique identifier for encrypting user password
                 $salt = md5(uniqid() . mt_rand() . microtime());
 
+
                 $username = htmlspecialchars($_POST["username"]);
+
+                //generate unique identifier for email verification
+                $email_uuid = sha1(uniqid() . $username);
 
                 //encrypt the user password using sha1 algorith with added salt
                 $password = sha1($salt . $_POST['password']);
@@ -48,7 +52,7 @@ if (isset($_POST['submit'])) {
 
                 $search_username = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username='$username' ");
 
-             
+
 
                 if ($search_username->num_rows == 0) {
 
@@ -60,11 +64,31 @@ if (isset($_POST['submit'])) {
 
                         if ($search_phone->num_rows == 0) {
 
-                            $save_user = mysqli_query($conn, "INSERT INTO `user_data` (id,username,`password`,email,phone_number,`Photo`,`photo type`,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt)   
-                    VALUES(NULL,'$username','$password','$email','$phone', '$file_data', '$file_ext' ,'$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date');");
+                            $save_user = mysqli_query($conn, "INSERT INTO `user_data` (id,username,`password`,email,phone_number,`Photo`,`photo type`,`Admin Activation Status`,`Email Activation Status` ,password_salt, `role`, CreatedAt, unique_email_identifier)   
+                    VALUES(NULL,'$username','$password','$email','$phone', '$file_data', '$file_ext' ,'$activation_status_default' , '$activation_status_default' ,'$salt', 'user','$Date', '$email_uuid');");
                             if (!$save_user) {
                                 $message = "Error registering user";
                             } else {
+
+                                //info needed to send email verification
+                                $subject = "Test Verification";
+                                $headers[] = "MIME-Version: 1.0";
+                                $headers[] = "Content-type: text/html; charset=iso-8859-1";
+                                $headers[] = "To: $username <$email>";
+                                $headers[] = "From: Test <test@example.com>";
+                        
+                                $mail_msg = "<html>
+                                <head>
+                                <title>Email verification test</title>
+                                </head>
+                                <body>
+                                please click this link to verify your account : <a>localhost:3000/basic_web/verify.php?uuid=$email_uuid</a>
+                                </body>
+                                </html>";
+
+                                //send the verification email
+                                mail($email, $subject, $message, implode("\r\n", $headers));
+
                                 $message = "registration successfull!\nPlease wait for verification";
                             }
                         } else {

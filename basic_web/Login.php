@@ -11,18 +11,18 @@ if (isset($_POST['login'])) {
 
     //search the user in db based on input username
     $query = mysqli_query($conn, "SELECT * FROM `user_data` WHERE username = '$input_username' ");
-    $check_password = mysqli_fetch_assoc($query);
+    $check_user = mysqli_fetch_assoc($query);
 
 
-    if ($check_password == NULL) {
+    if ($check_user == NULL) {
 
         $message = "account not registered, please register first!";
     } else {
 
         //check if the password is correct
-        $check_password_salt = $check_password['password_salt'];
+        $check_password_salt = $check_user['password_salt'];
 
-        $real_password = $check_password['password'];
+        $real_password = $check_user['password'];
         $input_password = sha1($check_password_salt . $_POST['password']);
 
         if ($real_password != $input_password) {
@@ -32,17 +32,17 @@ if (isset($_POST['login'])) {
 
 
             // check the activation status of the user
-            if ($check_password['Admin Activation Status']  == 'Pending') {
+            if ($check_user['Admin Activation Status']  == 'Pending') {
 
                 $message = 'your account are being verified, please wait';
-            } else if ($check_password['Admin Activation Status'] == 'Rejected') {
+            } else if ($check_user['Admin Activation Status'] == 'Rejected') {
 
                 $message = 'your account is rejected, please contact our customer support';
             } else {
 
 
                 $_SESSION['username'] = $input_username;
-                $_SESSION['role'] = $check_password['role'];
+                $_SESSION['role'] = $check_user['role'];
 
                 if (isset($_POST['remember_me'])) {
 
@@ -50,7 +50,7 @@ if (isset($_POST['login'])) {
                 }
 
 
-                if ($check_password['role'] == 'admin') {
+                if ($check_user['role'] == 'admin') {
                     $message = "login successfull";
                     header('Location: ./pending_user_admin.php');
                 } else {
